@@ -1,0 +1,14 @@
+{
+  "name": "@local-hosting/wire-workspace",
+  "private": true,
+  "description": "Thin-pipe wire grammar (member of @local-hosting/root). Run yarn from local-hosting/ or use these proxies.",
+  "scripts": {
+    "build": "yarn --cwd .. workspace @local-hosting/wire build",
+    "typecheck": "yarn --cwd .. workspace @local-hosting/wire typecheck",
+    "test": "yarn --cwd .. workspace @local-hosting/wire test",
+    "demo": "yarn --cwd .. workspace @local-hosting/wire-demo dev"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
