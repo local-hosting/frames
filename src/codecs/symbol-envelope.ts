@@ -19,10 +19,10 @@ export function decodeSymbolEnvelope(line: string): SymbolEnvelope | null {
 }
 
 /** Wire uses `_` in place of `.` inside vocab_base segments. */
-export function baseToWire(vocab_base: string): string {
+export function baseToFrame(vocab_base: string): string {
   return vocab_base.replace(/\./g, '_')
 }
 
-export function baseFromWire(base: string): string {
+export function baseFromFrame(base: string): string {
   return base.replace(/_/g, '.')
 }

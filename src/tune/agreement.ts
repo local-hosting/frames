@@ -3,7 +3,7 @@
  * Keys / rotation material stay in the host — wire only carries epoch ids.
  */
 
-export type WireSession = {
+export type FrameSession = {
   /** Community / formation / net id (channel). */
   net: string
   /** Crypto / session epoch — host rotates; wire only compares. */
@@ -12,8 +12,8 @@ export type WireSession = {
   vocab_tip: string
 }
 
-/** On-air tune body — same fields as {@link WireSession}. */
-export type TuneAgreement = WireSession
+/** On-air tune body — same fields as {@link FrameSession}. */
+export type TuneAgreement = FrameSession
 
 export type TuneCheckResult =
   | { ok: true }
@@ -32,7 +32,7 @@ export type TuneCheckResult =
       actual: string
     }
 
-export function sessionsEqual(a: WireSession, b: WireSession): boolean {
+export function sessionsEqual(a: FrameSession, b: FrameSession): boolean {
   return (
     a.net === b.net &&
     a.key_epoch === b.key_epoch &&
@@ -42,7 +42,7 @@ export function sessionsEqual(a: WireSession, b: WireSession): boolean {
 
 /** Compare a decoded tune agreement to the local session (fail closed). */
 export function checkTune(
-  local: WireSession,
+  local: FrameSession,
   remote: TuneAgreement,
 ): TuneCheckResult {
   if (local.net !== remote.net) {

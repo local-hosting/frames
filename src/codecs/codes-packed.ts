@@ -10,7 +10,7 @@ import {
   resolvePackedFieldId,
   resolvePackedFieldName,
 } from '../registry/packed-fields.js'
-import type { BinaryCodec, CompactFrame, SymbolKind, WireCodec } from '../types.js'
+import type { BinaryCodec, CompactFrame, SymbolKind, FrameCodec } from '../types.js'
 import { SYMBOL_INTENT } from './symbol-kinds.js'
 
 /**
@@ -34,7 +34,7 @@ const KIND_INDEX = new Map(
   REFERENT_KINDS.map((kind, i) => [kind, i] as const),
 )
 
-export type CodesPackedCodec = WireCodec &
+export type CodesPackedCodec = FrameCodec &
   BinaryCodec & {
     vocabMatches(frame: CompactFrame, vocab_base: string): boolean
   }

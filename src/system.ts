@@ -3,15 +3,15 @@ import {
   expandCompactFrame,
   type ExpandCompactResult,
 } from './expand/expand.js'
-import { decodeCompactWire } from './frame/decode-wire.js'
-import { ensureWireDefaults } from './registry/bootstrap.js'
+import { decodeCompactFrame } from './frame/decode-compact-frame.js'
+import { ensureFrameDefaults } from './registry/bootstrap.js'
 import {
   decodePackedBytes,
   encodePackedBytes,
 } from './registry/packed-codecs.js'
 import type { CompactFrame, LocalSymbolTablePack } from './types.js'
 
-export type WireSystem = {
+export type FrameSystem = {
   readonly table: LocalSymbolTablePack
   encodePacked(frame: CompactFrame): Uint8Array
   decodePacked(data: Uint8Array): CompactFrame | null
@@ -22,8 +22,8 @@ export type WireSystem = {
 }
 
 /** Host-facing facade: pack/unpack + expand against one local symbol table. */
-export function createWireSystem(table: LocalSymbolTablePack): WireSystem {
-  ensureWireDefaults()
+export function createFrameSystem(table: LocalSymbolTablePack): FrameSystem {
+  ensureFrameDefaults()
   return {
     table,
     encodePacked: encodePackedBytes,
@@ -33,7 +33,7 @@ export function createWireSystem(table: LocalSymbolTablePack): WireSystem {
       if (!frame) return null
       return bindPackedVocabBase(frame, table.vocab_base)
     },
-    decodeText: decodeCompactWire,
+    decodeText: decodeCompactFrame,
     expand(frame) {
       return expandCompactFrame(table, frame)
     },

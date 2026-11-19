@@ -1,35 +1,49 @@
 /**
- * Per-protocol wireless planning envelopes (sensors catalog technology slugs).
- * Numbers are conservative planning envelopes, not guarantees.
+ * Wire link types — canonical definitions live in `@local-hosting/comms`.
  */
 
-export type WirelessLinkKind = 'rf' | 'wired' | 'app' | 'sensor'
+export type {
+  BearerCategory,
+  BearerLayout,
+  BearerPipe,
+  BearerProfile,
+  BitrateRange,
+  ByteRange,
+  CommsProfile,
+  CommsTagId,
+  CovScope,
+  Geo,
+  GeoRf,
+  NumericRange,
+  Ops,
+  OpsAvail,
+  OpsDir,
+  OpsMob,
+  OpsUsage,
+  OverlayCategory,
+  OverlayLayout,
+  OverlayPipe,
+  OverlayProfile,
+  PipeFit,
+  ProfileCategory,
+  ProfileLayout,
+  RangeM,
+  SpectrumRegime,
+} from '@local-hosting/comms'
 
-/** Which wire pipe this link can realistically carry. */
-export type WirelessPipeFit = 'thin' | 'fat' | 'both' | 'none'
+export {
+  PROFILE_LAYOUTS,
+  assertCommsProfile,
+  defBearer,
+  defCommsProfile,
+  defOverlay,
+  isBearerCategory,
+  isBearerPipe,
+  isBearerProfile,
+  isOverlayCategory,
+  isOverlayPipe,
+  isOverlayProfile,
+} from '@local-hosting/comms'
 
-export type ByteRange = {
-  min: number
-  typical: number
-  max: number
-}
-
-export type BitrateRange = {
-  min: number
-  typical: number
-  max: number
-}
-
-export type WirelessLinkProfile = {
-  id: string
-  name: string
-  kind: WirelessLinkKind
-  payloadBytes: ByteRange
-  bitrateBps: BitrateRange
-  pipe: WirelessPipeFit
-  packetNotes: string
-}
-
-export function defineLink(profile: WirelessLinkProfile): WirelessLinkProfile {
-  return profile
-}
+export type { LinkProfile } from './link-profile.js'
+export { defLink } from './link-profile.js'

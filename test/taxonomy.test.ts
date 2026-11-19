@@ -16,7 +16,7 @@ import {
   SYMBOL_VERIFY,
   codesCodec,
   codesToCompact,
-  decodeCompactWire,
+  decodeCompactFrame,
   expandCompactFrame,
   frameSymbolName,
   intentCodec,
@@ -98,7 +98,7 @@ describe('codes codec', () => {
     })
   })
 
-  it('decodeCompactWire prefers intent codec then codes', () => {
+  it('decodeCompactFrame prefers intent codec then codes', () => {
     const intentWire = intentCodec.encode(
       intentToCompact('0.2.0', {
         event_code: 1,
@@ -108,7 +108,7 @@ describe('codes codec', () => {
         place_codes: [],
       }),
     )
-    const intent = decodeCompactWire(intentWire)
+    const intent = decodeCompactFrame(intentWire)
     expect(intent?.symbol).toBe(SYMBOL_INTENT)
 
     const reading = codesToCompact(SYMBOL_READING, '0.2.0', {
@@ -116,6 +116,6 @@ describe('codes codec', () => {
       place: [20],
     })
     const readingWire = codesCodec.encode(reading)
-    expect(decodeCompactWire(readingWire)).toEqual(reading)
+    expect(decodeCompactFrame(readingWire)).toEqual(reading)
   })
 })

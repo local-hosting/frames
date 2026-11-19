@@ -5,7 +5,7 @@ import {
   readU16LE,
   writeU16LE,
 } from '../bits.js'
-import type { CompactFrame, WireCodec } from '../types.js'
+import type { CompactFrame, FrameCodec } from '../types.js'
 import { SYMBOL_INTENT } from './symbol-kinds.js'
 
 /**
@@ -21,7 +21,7 @@ import { SYMBOL_INTENT } from './symbol-kinds.js'
 
 export const INTENT_PACKED_VERSION = 1
 
-export type IntentPackedCodec = WireCodec & {
+export type IntentPackedCodec = FrameCodec & {
   encodeBytes(frame: CompactFrame): Uint8Array
   decodeBytes(data: Uint8Array): CompactFrame | null
   /** True when local vocab_base fingerprint matches the frame. */

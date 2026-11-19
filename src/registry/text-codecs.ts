@@ -1,19 +1,19 @@
-import type { CompactFrame, WireCodec } from '../types.js'
+import type { CompactFrame, FrameCodec } from '../types.js'
 
 /** Ordered text codecs for sim/debug decode (first match wins). */
 
-const codecs: WireCodec[] = []
+const codecs: FrameCodec[] = []
 
-export function registerTextCodec(codec: WireCodec): void {
+export function registerTextCodec(codec: FrameCodec): void {
   if (codecs.some((c) => c.name === codec.name)) return
   codecs.push(codec)
 }
 
-export function listTextCodecs(): readonly WireCodec[] {
+export function listTextCodecs(): readonly FrameCodec[] {
   return codecs
 }
 
-export function decodeCompactWire(wire: string): CompactFrame | null {
+export function decodeCompactFrame(wire: string): CompactFrame | null {
   for (const codec of codecs) {
     const frame = codec.decode(wire)
     if (frame) return frame
@@ -21,7 +21,7 @@ export function decodeCompactWire(wire: string): CompactFrame | null {
   return null
 }
 
-export function encodeCompactWire(
+export function encodeCompactFrame(
   frame: CompactFrame,
   codecName?: string,
 ): string {

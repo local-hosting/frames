@@ -91,7 +91,7 @@ export type CompactFrame = {
 }
 
 /** Text wire codec (sim / debug envelopes). */
-export type WireCodec = {
+export type FrameCodec = {
   readonly name: string
   encode(frame: CompactFrame): string
   decode(wire: string): CompactFrame | null

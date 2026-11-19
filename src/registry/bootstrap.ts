@@ -14,7 +14,7 @@ import { registerTextCodec } from './text-codecs.js'
 let bootstrapped = false
 
 /** Idempotent default registrations for built-in codecs. */
-export function ensureWireDefaults(): void {
+export function ensureFrameDefaults(): void {
   if (bootstrapped) return
   bootstrapped = true
 

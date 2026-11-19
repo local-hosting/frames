@@ -13,7 +13,7 @@ import {
   codesToCompact,
   createVocabSnapshot,
   createVocabStore,
-  decodeCompactWire,
+  decodeCompactFrame,
   encodePackedBytes,
   expandWithStore,
   frameSymbolName,
@@ -31,12 +31,12 @@ import {
   type SymbolTableEntry,
   type VocabMigration,
   type VocabSnapshot,
-  type WireSession,
-} from '@local-hosting/wire'
+  type FrameSession,
+} from '@local-hosting/frames'
 import { composeWords } from '@local-hosting/compose'
 import './style.css'
 
-const log = createLogger('wire-demo')
+const log = createLogger('frames-demo')
 const loggedHeals = new Set<string>()
 /** Tips already fat-pulled this session (avoid repeat pulls). */
 const healedTips = new Set<string>()
@@ -130,7 +130,7 @@ function fatPullTip(fingerprint: string): boolean {
   return true
 }
 
-const session: WireSession = {
+const session: FrameSession = {
   net: 'community-demo',
   key_epoch: 1,
   vocab_tip: tip,
@@ -441,7 +441,7 @@ function previewCompose(text: string): void {
     composerHint.textContent = ''
     return
   }
-  const pasted = decodeCompactWire(trimmed)
+  const pasted = decodeCompactFrame(trimmed)
   if (pasted) {
     const views = viewsFor(pasted)
     composerHint.textContent = `wire → packed ${views.packedBytes}B`
@@ -477,7 +477,7 @@ composer.addEventListener('submit', (event) => {
   const text = messageInput.value.trim()
   if (!text) return
 
-  const pasted = decodeCompactWire(text)
+  const pasted = decodeCompactFrame(text)
   if (pasted) {
     appendFrame(pasted)
     return
