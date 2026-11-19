@@ -141,7 +141,7 @@ const labels: Record<string, LabelMap> = {
   A_1: { en: 'notify' },
   A_2: { en: 'escalate' },
   P_1: { en: 'lobby' },
-  PR_1: { en: 'ops' },
+  PR_1: { en: 'staff' },
   R_1: { en: 'radio' },
   E_BAD: { en: 'bad food' },
 }
@@ -229,7 +229,7 @@ app.innerHTML = `
             name="message"
             id="message"
             class="block w-full resize-none border-0 bg-transparent px-3 py-1.5 text-stone-900 placeholder:text-stone-400 focus:ring-0 sm:text-sm/6"
-            placeholder="Type vocab words… e.g. demo event notify lobby ops high"
+            placeholder="Type vocab words… e.g. demo event notify lobby staff high"
           ></textarea>
           <div class="py-2" aria-hidden="true">
             <div class="py-px">

@@ -9,7 +9,8 @@ import {
   resolveStackDefault as resolveStack,
 } from '@local-hosting/comms'
 import stackRules from '@local-hosting/comms/stack.json' with { type: 'json' }
-import { forLink, planFrame } from '../src/link/index.js'
+import { intentToCompact } from '../src/core.js'
+import { encodeThinFrame, forLink, planFrame } from '../src/link/index.js'
 
 const registry = getDefaultLinkRegistry()
 const { fitsLink, getLink, listBearers, listFat, listLinks, listOverlays, listThin } = registry
@@ -162,6 +163,21 @@ describe('link planning (comms catalog + frames encode)', () => {
       ok: false,
       reason: 'incompatible_stack',
     })
+  })
+
+  it('encodeThinFrame packs minimal intent within lorawan typical', () => {
+    const compact = intentToCompact('0.2.0', {
+      event_code: 1,
+      band: 3,
+      actor_codes: [40],
+      action_codes: [10],
+      place_codes: [20],
+    })
+    const result = encodeThinFrame(compact, 'lorawan')
+    expect(result.ok).toBe(true)
+    if (!result.ok) return
+    expect(result.bytes.length).toBeLessThanOrEqual(32)
+    expect(result.plan.preferEncode).toBe('packed')
   })
 
   it('planFrame stacks mqtt on lorawan with packed encode', () => {
