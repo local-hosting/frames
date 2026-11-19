@@ -7,7 +7,7 @@ import {
   encodeIntentPackedBytes,
   expandCodes,
   intentCodec,
-} from '../src/index.js'
+} from '../src/core.js'
 import { sampleTable } from './fixtures.js'
 
 describe('intent packed binary', () => {

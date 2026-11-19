@@ -5,7 +5,7 @@ import {
   encodeReportCreate,
   reportCreateHeader,
   reportHeaderType,
-} from '../src/index.js'
+} from '../src/core.js'
 
 describe('report-create pack', () => {
   it('roundtrips fixed 13-byte layout', () => {

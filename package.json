@@ -8,9 +8,9 @@
   "license": "UNLICENSED",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
+      "types": "./dist/core.d.ts",
+      "import": "./dist/core.js",
+      "default": "./dist/core.js"
     },
     "./core": {
       "types": "./dist/core.d.ts",
@@ -23,7 +23,7 @@
       "default": "./dist/link/index.js"
     }
   },
-  "types": "./dist/index.d.ts",
+  "types": "./dist/core.d.ts",
   "files": [
     "dist",
     "README.md",
@@ -43,10 +43,16 @@
     "dev": "vite --config demo/vite.config.ts",
     "preview": "vite preview --config demo/vite.config.ts"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@local-hosting/comms": "0.3.0"
   },
+  "peerDependenciesMeta": {
+    "@local-hosting/comms": {
+      "optional": true
+    }
+  },
   "devDependencies": {
+    "@local-hosting/comms": "0.3.0",
     "@local-hosting/compose": "0.1.0",
     "@tailwindcss/vite": "^4.1.17",
     "@types/js-yaml": "^4.0.9",

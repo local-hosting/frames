@@ -1,22 +1,18 @@
 import { describe, expect, it } from 'vitest'
 import {
-  canFatHeal,
-  forLink,
-  fitsLink,
-  getLink,
-  isThin,
+  canFatHealLink as canFatHeal,
+  getDefaultLinkRegistry,
   isBearerProfile,
   isOverlayProfile,
-  listBearers,
-  listFat,
-  listLinks,
-  listOverlays,
-  listThin,
-  resolveStack,
   isStackCompatible,
-  planFrame,
-} from '../src/link/index.js'
+  isThinLink as isThin,
+  resolveStackDefault as resolveStack,
+} from '@local-hosting/comms'
 import stackRules from '@local-hosting/comms/stack.json' with { type: 'json' }
+import { forLink, planFrame } from '../src/link/index.js'
+
+const registry = getDefaultLinkRegistry()
+const { fitsLink, getLink, listBearers, listFat, listLinks, listOverlays, listThin } = registry
 
 /** sensors catalog techById slugs that have comms bearer/overlay profiles. */
 const SENSOR_CATALOG_TECH = [
@@ -97,7 +93,7 @@ const SENSOR_CATALOG_NETWORKS = [
   'machineq',
 ] as const
 
-describe('link planning (comms catalog via frames)', () => {
+describe('link planning (comms catalog + frames encode)', () => {
   it('covers every sensors catalog technology slug', () => {
     const ids = new Set(listLinks().map((l) => l.id))
     for (const slug of SENSOR_CATALOG_TECH) {

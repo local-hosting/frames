@@ -12,7 +12,7 @@ import {
   listTextCodecs,
   registerPackedField,
   resolvePackedFieldId,
-} from '../src/index.js'
+} from '../src/core.js'
 import { sampleTable } from './fixtures.js'
 
 describe('frame registries + system', () => {

@@ -11,7 +11,7 @@ import {
   encodePackedBytes,
   expandCompactFrame,
   packedCodec,
-} from '../src/index.js'
+} from '../src/core.js'
 import { sampleTable } from './fixtures.js'
 
 describe('codes packed binary', () => {
