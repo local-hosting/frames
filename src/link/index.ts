@@ -1,3 +1,7 @@
+import { encodeCodesPackedBytes } from '../codecs/codes-packed.js'
+import { SYMBOL_INTENT } from '../codecs/symbol-kinds.js'
+import { encodeIntentPackedBytes } from '../codecs/intent-packed.js'
+import type { CompactFrame } from '../types.js'
 import {
   planBearer,
   planStack,
@@ -101,4 +105,42 @@ export function planFrame(
     fitsMax: plan.fitsMax,
     preferEncode: preferEncodeFor(plan.link.pipe, plan.budgetBytes),
   }
+}
+
+export type EncodeThinFrameResult =
+  | {
+      ok: true
+      bytes: Uint8Array
+      plan: PlanFrameSuccess
+    }
+  | {
+      ok: false
+      reason: string
+      plan?: PlanFrameResult
+    }
+
+export function encodeThinFrame(
+  frame: CompactFrame,
+  bearerId: string,
+  overlayId?: string,
+): EncodeThinFrameResult {
+  const bytes =
+    frame.symbol === SYMBOL_INTENT
+      ? encodeIntentPackedBytes(frame)
+      : encodeCodesPackedBytes(frame)
+  const plan = planFrame(bearerId, bytes.length, overlayId)
+  if (!plan.ok) {
+    return { ok: false, reason: plan.reason, plan }
+  }
+  if (plan.preferEncode !== 'packed') {
+    return { ok: false, reason: 'link does not prefer packed encoding', plan }
+  }
+  if (!plan.fitsTypical) {
+    return {
+      ok: false,
+      reason: `payload ${bytes.length}B exceeds typical budget ${plan.budgetBytes}B`,
+      plan,
+    }
+  }
+  return { ok: true, bytes, plan }
 }
