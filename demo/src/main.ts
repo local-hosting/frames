@@ -444,7 +444,7 @@ function previewCompose(text: string): void {
   const pasted = decodeCompactFrame(trimmed)
   if (pasted) {
     const views = viewsFor(pasted)
-    composerHint.textContent = `wire → packed ${views.packedBytes}B`
+    composerHint.textContent = `frames → packed ${views.packedBytes}B`
     return
   }
   const result = composeWords(trimmed, table, labels)
