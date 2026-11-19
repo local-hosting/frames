@@ -119,7 +119,7 @@ export const FRAME_ILLOCUTIONS: readonly FrameIllocution[] = [
   {
     symbol: SYMBOL_NARRATIVE,
     name: 'narrative',
-    role: 'story/scene packaging for humans',
+    role: 'human-facing narrative packaging',
     direction: 'out',
   },
   {

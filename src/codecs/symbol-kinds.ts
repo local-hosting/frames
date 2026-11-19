@@ -9,7 +9,7 @@ export const SYMBOL_QUERY = 6
 export const SYMBOL_ACK = 7
 export const SYMBOL_SIGNAL = 8
 export const SYMBOL_TREND = 9
-/** Narrative packaging (story/scene refs) — not the `story` referent kind. */
+/** Human-facing narrative packaging (illocution) — not a referent kind. */
 export const SYMBOL_NARRATIVE = 10
 export const SYMBOL_REPORT = 11
 /** Approve/confirm a specific report or observation (not rating of an intent). */
