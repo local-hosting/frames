@@ -13,7 +13,7 @@
   "dependencies": {
     "@local-hosting/compose": "0.1.0",
     "@local-hosting/wire": "0.1.0",
-    "@westlane/pino-blanc": "0.1.4",
+    "@westlane/pino-blanc": "github:westlane/pino-blanc#v0.1.5",
     "buffer": "^6.0.3"
   },
   "devDependencies": {
