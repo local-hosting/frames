@@ -4,7 +4,7 @@ CompactFrame codecs: encode/decode frames, expand codes ↔ ids via a shared sym
 
 The full table syncs on the **fat** pipe. Thin frames carry a **content fingerprint tip** + codes.
 
-Link budgets and bearer profiles live in **`@local-hosting/comms`**; call `planFrame` / `forLink` before thin encode when size matters.
+**`@local-hosting/comms` is optional** for this package: the default entry and `./core` are codecs only and install without comms. For wire budgets + encode preference, add comms and import **`@local-hosting/frames/link`** (`planFrame`, `forLink`, `preferEncodeFor`).
 
 ## Browser demo
 
@@ -22,10 +22,11 @@ import {
 ```
 
 ```ts
+// optional — requires `@local-hosting/comms` alongside frames:
 import { planFrame, forLink } from '@local-hosting/frames/link'
-// or codecs only:
-import { expandCompactFrame } from '@local-hosting/frames/core'
 ```
+
+`@local-hosting/frames` and `@local-hosting/frames/core` resolve to the same `core` module.
 
 ## Commands
 

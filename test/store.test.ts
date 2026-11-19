@@ -14,7 +14,7 @@ import {
   publishSnapshot,
   type CrosswalkEntry,
   type SymbolTableEntry,
-} from '../src/index.js'
+} from '../src/core.js'
 
 const baseEntries: SymbolTableEntry[] = [
   { id: 'E_1', code: 1, kind: 'event' },

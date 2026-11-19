@@ -1,3 +1,4 @@
+/** Codecs and vocab — no `@local-hosting/comms`. Wire planning: `@local-hosting/frames/link`. */
 import { ensureFrameDefaults } from './registry/bootstrap.js'
 
 ensureFrameDefaults()

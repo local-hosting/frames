@@ -10,7 +10,7 @@ import {
   tuneCodec,
   tuneToCompact,
   type FrameSession,
-} from '../src/index.js'
+} from '../src/core.js'
 
 const session: FrameSession = {
   net: 'community-demo',

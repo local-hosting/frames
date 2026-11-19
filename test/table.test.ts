@@ -6,7 +6,7 @@ import {
   labelsForIds,
   resolveCodeById,
   resolveIdByCode,
-} from '../src/index.js'
+} from '../src/core.js'
 import { sampleTable } from './fixtures.js'
 
 describe('symbol table expand/compress', () => {

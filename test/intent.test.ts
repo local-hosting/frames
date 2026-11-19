@@ -5,7 +5,7 @@ import {
   compactToIntent,
   expandCodes,
   SYMBOL_INTENT,
-} from '../src/index.js'
+} from '../src/core.js'
 import { sampleTable } from './fixtures.js'
 
 describe('intent codec', () => {

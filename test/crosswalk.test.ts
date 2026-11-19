@@ -10,7 +10,7 @@ import {
   idToLegacy,
   type CrosswalkEntry,
   type LocalSymbolTablePack,
-} from '../src/index.js'
+} from '../src/core.js'
 
 /** Host-supplied sample — wire ships no baked catalog. */
 const DEMO_CROSSWALK: CrosswalkEntry[] = [
