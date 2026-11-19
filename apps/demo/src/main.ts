@@ -7,6 +7,7 @@ import {
   SYMBOL_INTENT,
   SYMBOL_QUERY,
   SYMBOL_READING,
+  addSnapshot,
   checkTuneFrame,
   codesCodec,
   codesToCompact,
@@ -28,6 +29,8 @@ import {
   type ExpandFailure,
   type LabelMap,
   type SymbolTableEntry,
+  type VocabMigration,
+  type VocabSnapshot,
   type WireSession,
 } from '@local-hosting/wire'
 import { composeWords } from '@local-hosting/compose'
@@ -35,6 +38,8 @@ import './style.css'
 
 const log = createLogger('wire-demo')
 const loggedHeals = new Set<string>()
+/** Tips already fat-pulled this session (avoid repeat pulls). */
+const healedTips = new Set<string>()
 
 function logNeedHeal(failure: Extract<ExpandFailure, { reason: 'need_heal' }>): void {
   if (loggedHeals.has(failure.fingerprint)) return
@@ -73,6 +78,58 @@ store = publishAppend(store, {
 const table = snapshotToTable(store.byFingerprint.get(store.active)!)
 const tip = store.active
 
+/**
+ * Off-air fat catalog (stub). `fp-badf00d` is a placeholder tip on the thin
+ * frame; fat-pull returns a real snapshot + migration onto that tip.
+ */
+type FatPack = {
+  snapshot: VocabSnapshot
+  migration: VocabMigration
+}
+
+const healSnapshot = createVocabSnapshot({
+  lineage: 'community:demo',
+  epoch: 3,
+  parent: tip,
+  label: '0.3.1-heal',
+  entries: [
+    ...store.byFingerprint.get(tip)!.entries,
+    { id: 'E_BAD', code: 999, kind: 'event' },
+  ],
+})
+
+const FAT_CATALOG: Record<string, FatPack> = {
+  'fp-badf00d': {
+    snapshot: healSnapshot,
+    migration: {
+      from: 'fp-badf00d',
+      to: healSnapshot.fingerprint,
+      remaps: [{ kind: 'event', code: 999, toCode: 999 }],
+    },
+  },
+}
+
+function fatPullTip(fingerprint: string): boolean {
+  if (healedTips.has(fingerprint)) return true
+  const pack = FAT_CATALOG[fingerprint]
+  if (!pack) {
+    log.warn('fat-pull miss — no pack for tip', { fingerprint })
+    return false
+  }
+  store = addSnapshot(store, pack.snapshot)
+  store = {
+    ...store,
+    migrations: [...store.migrations, pack.migration],
+  }
+  healedTips.add(fingerprint)
+  log.info('fat-pull heal — ingested tip', {
+    parked: fingerprint,
+    resolvedVia: pack.snapshot.fingerprint,
+    label: pack.snapshot.label,
+  })
+  return true
+}
+
 const session: WireSession = {
   net: 'community-demo',
   key_epoch: 1,
@@ -86,6 +143,7 @@ const labels: Record<string, LabelMap> = {
   P_1: { en: 'lobby' },
   PR_1: { en: 'ops' },
   R_1: { en: 'radio' },
+  E_BAD: { en: 'bad food' },
 }
 
 const frames: CompactFrame[] = [
@@ -110,7 +168,7 @@ const frames: CompactFrame[] = [
     actor: [40],
   }),
   codesToCompact(SYMBOL_ACK, tip, { action: [10] }, { ok: 1 }),
-  // Synthetic unknown tip (hexspeak placeholder) — need_heal demo
+  // Synthetic unknown tip (hexspeak placeholder) — need_heal → fat-pull stub
   codesToCompact(SYMBOL_READING, 'fp-badf00d', { event: [999] }),
 ]
 
@@ -224,7 +282,9 @@ function escapeHtml(value: string): string {
 
 function messageTags(frame: CompactFrame): string[] {
   const expanded = expandWithStore(store, frame)
-  if (!expanded.ok) return []
+  if (!expanded.ok) {
+    return expanded.reason === 'need_heal' ? ['need_heal'] : []
+  }
   const names = Object.values(expanded.ids).flatMap((ids) =>
     labelsForIds(ids ?? [], labels, 'en').map(({ id, label }) =>
       (label ?? id).toLowerCase(),
@@ -283,7 +343,22 @@ function detailHtml(frame: CompactFrame): string {
   if (!expanded.ok) {
     if (expanded.reason === 'need_heal') {
       logNeedHeal(expanded)
-      return `<p class="pane-msg text-sm leading-relaxed">Can't expand — local store doesn't have tip <span class="font-mono">${escapeHtml(expanded.fingerprint)}</span>. Fetch that vocab table, then retry. (logged to console)</p>`
+      const canPull = Boolean(FAT_CATALOG[expanded.fingerprint])
+      return `
+        <p class="pane-msg text-sm leading-relaxed">
+          Can't expand — local store doesn't have tip
+          <span class="font-mono">${escapeHtml(expanded.fingerprint)}</span>.
+          Park the frame and fat-pull that vocab table, then retry.
+        </p>
+        ${
+          canPull
+            ? `<button
+                type="button"
+                data-fat-pull="${escapeHtml(expanded.fingerprint)}"
+                class="composer-send mt-3 rounded-md px-2.5 py-1.5 text-sm font-semibold shadow-sm"
+              >Fat-pull tip</button>`
+            : `<p class="pane-meta mt-2 text-xs">No stub pack for this tip.</p>`
+        }`
     }
     return `<pre class="json-out font-mono text-sm leading-relaxed whitespace-pre-wrap">${colorJson(JSON.stringify(expanded, null, 2))}</pre>`
   }
@@ -348,6 +423,15 @@ rows.addEventListener('click', (event) => {
   const target = (event.target as HTMLElement).closest('button[data-index]')
   if (!target) return
   selected = Number((target as HTMLButtonElement).dataset.index)
+  render()
+})
+
+out.addEventListener('click', (event) => {
+  const button = (event.target as HTMLElement).closest('button[data-fat-pull]')
+  if (!button) return
+  const fingerprint = (button as HTMLButtonElement).dataset.fatPull
+  if (!fingerprint) return
+  if (!fatPullTip(fingerprint)) return
   render()
 })
 
