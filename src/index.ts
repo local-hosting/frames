@@ -222,3 +222,25 @@ export { ensureWireDefaults } from './registry/bootstrap.js'
 export { packedCodec, type PackedCodec } from './codecs/packed.js'
 
 export { createWireSystem, type WireSystem } from './system.js'
+
+export type {
+  WirelessLinkKind,
+  WirelessPipeFit,
+  ByteRange,
+  BitrateRange,
+  WirelessLinkProfile,
+  WireEncodePrefer,
+  OptimizeForLinkResult,
+} from './link/index.js'
+export {
+  defineLink,
+  WIRELESS_LINKS,
+  getWirelessLink,
+  listWirelessLinks,
+  listThinPipeLinks,
+  listFatPipeLinks,
+  payloadFitsLink,
+  optimizeForLink,
+  isThinOnlyLink,
+  canFatHealOnLink,
+} from './link/index.js'

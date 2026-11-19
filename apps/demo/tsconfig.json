@@ -6,11 +6,8 @@
     "strict": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "paths": {
-      "@local-hosting/wire": ["../../packages/wire/src/index.ts"],
-      "@local-hosting/compose": ["../../../compose/src/index.ts"]
-    }
+    "lib": ["ES2022", "DOM", "DOM.Iterable"]
   },
-  "include": ["src", "vite.config.ts"]
+  "include": ["src"]
 }
+
