@@ -1,13 +1,13 @@
 import { SYMBOL_BASE } from '../codecs/symbol-kinds.js'
 import {
-  baseFromWire,
-  baseToWire,
+  baseFromFrame,
+  baseToFrame,
   decodeSymbolEnvelope,
   encodeSymbolEnvelope,
 } from '../codecs/symbol-envelope.js'
-import type { CompactFrame, WireCodec } from '../types.js'
+import type { CompactFrame, FrameCodec } from '../types.js'
 import type { TuneAgreement } from './agreement.js'
-import { checkTune, type TuneCheckResult, type WireSession } from './agreement.js'
+import { checkTune, type TuneCheckResult, type FrameSession } from './agreement.js'
 
 /** Body: `net=<id>|key_epoch=<n>` (UTF-8 hex in envelope). Tip is envelope base. */
 export function encodeTuneBody(tune: TuneAgreement): string {
@@ -58,7 +58,7 @@ export function compactToTune(frame: CompactFrame): TuneAgreement | null {
   }
 }
 
-export const tuneCodec: WireCodec = {
+export const tuneCodec: FrameCodec = {
   name: 'tune-symbol-envelope',
 
   encode(frame: CompactFrame): string {
@@ -68,7 +68,7 @@ export const tuneCodec: WireCodec = {
     }
     return encodeSymbolEnvelope({
       symbol: SYMBOL_BASE,
-      base: baseToWire(tune.vocab_tip),
+      base: baseToFrame(tune.vocab_tip),
       hex: Buffer.from(encodeTuneBody(tune), 'utf8').toString('hex'),
     })
   },
@@ -82,15 +82,15 @@ export const tuneCodec: WireCodec = {
     } catch {
       return null
     }
-    const tune = decodeTuneBody(body, baseFromWire(env.base))
+    const tune = decodeTuneBody(body, baseFromFrame(env.base))
     if (!tune) return null
     return tuneToCompact(tune)
   },
 }
 
-/** Decode wire as tune and check against local session. */
-export function checkTuneWire(
-  local: WireSession,
+/** Decode on-air text as tune and check against local session. */
+export function checkTuneFromText(
+  local: FrameSession,
   wire: string,
 ): TuneCheckResult | { ok: false; reason: 'decode_failed' } {
   const frame = tuneCodec.decode(wire)
@@ -102,7 +102,7 @@ export function checkTuneWire(
 
 /** Decode frame as tune and check against local session. */
 export function checkTuneFrame(
-  local: WireSession,
+  local: FrameSession,
   frame: CompactFrame,
 ): TuneCheckResult {
   const tune = compactToTune(frame)

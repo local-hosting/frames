@@ -4,7 +4,7 @@ import {
   SYMBOL_READING,
   bindPackedVocabBase,
   codesToCompact,
-  createWireSystem,
+  createFrameSystem,
   decodePackedBytes,
   encodePackedBytes,
   listPackedCodecs,
@@ -15,7 +15,7 @@ import {
 } from '../src/index.js'
 import { sampleTable } from './fixtures.js'
 
-describe('wire registries + system', () => {
+describe('frame registries + system', () => {
   it('bootstraps default packed and text codecs', () => {
     const packed = listPackedCodecs()
     expect(packed.some((c) => c.symbol === 4 && c.name === 'intent-packed-v1')).toBe(
@@ -51,8 +51,8 @@ describe('wire registries + system', () => {
     expect(() => registerPackedField('other', 10)).toThrow(/already bound/)
   })
 
-  it('createWireSystem packs and expands', () => {
-    const sys = createWireSystem(sampleTable)
+  it('createFrameSystem packs and expands', () => {
+    const sys = createFrameSystem(sampleTable)
     const frame = codesToCompact(SYMBOL_READING, sampleTable.vocab_base, {
       event: [1],
       place: [20],

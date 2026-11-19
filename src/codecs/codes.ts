@@ -1,8 +1,8 @@
-import type { CompactFrame, SymbolKind, WireCodec } from '../types.js'
+import type { CompactFrame, SymbolKind, FrameCodec } from '../types.js'
 import { isReferentKind } from '../frame/taxonomy.js'
 import {
-  baseFromWire,
-  baseToWire,
+  baseFromFrame,
+  baseToFrame,
   decodeSymbolEnvelope,
   encodeSymbolEnvelope,
 } from './symbol-envelope.js'
@@ -71,13 +71,13 @@ export function codesToCompact(
   return { symbol, vocab_base, codes, fields }
 }
 
-export const codesCodec: WireCodec = {
+export const codesCodec: FrameCodec = {
   name: 'codes-symbol-envelope',
 
   encode(frame: CompactFrame): string {
     return encodeSymbolEnvelope({
       symbol: frame.symbol,
-      base: baseToWire(frame.vocab_base),
+      base: baseToFrame(frame.vocab_base),
       hex: Buffer.from(encodeCodesBody(frame), 'utf8').toString('hex'),
     })
   },
@@ -95,7 +95,7 @@ export const codesCodec: WireCodec = {
     if (!parsed) return null
     return {
       symbol: env.symbol,
-      vocab_base: baseFromWire(env.base),
+      vocab_base: baseFromFrame(env.base),
       codes: parsed.codes,
       fields: parsed.fields,
     }

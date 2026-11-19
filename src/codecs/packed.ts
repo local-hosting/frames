@@ -3,9 +3,9 @@ import {
   decodePackedBytes,
   encodePackedBytes,
 } from '../registry/packed-codecs.js'
-import type { BinaryCodec, CompactFrame, WireCodec } from '../types.js'
+import type { BinaryCodec, CompactFrame, FrameCodec } from '../types.js'
 
-export type PackedCodec = WireCodec & BinaryCodec
+export type PackedCodec = FrameCodec & BinaryCodec
 
 /** Hex facade over the packed codec registry. */
 export const packedCodec: PackedCodec = {

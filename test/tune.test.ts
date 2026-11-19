@@ -4,15 +4,15 @@ import {
   checkTune,
   checkTuneFrame,
   compactToTune,
-  decodeCompactWire,
+  decodeCompactFrame,
   decodePackedBytes,
   encodePackedBytes,
   tuneCodec,
   tuneToCompact,
-  type WireSession,
+  type FrameSession,
 } from '../src/index.js'
 
-const session: WireSession = {
+const session: FrameSession = {
   net: 'community-demo',
   key_epoch: 2,
   vocab_tip: 'fp-aaaaaaaaaaaaaaaa',
@@ -26,7 +26,7 @@ describe('tune / SYMBOL_BASE', () => {
     const wire = tuneCodec.encode(frame)
     const decoded = tuneCodec.decode(wire)
     expect(compactToTune(decoded!)).toEqual(session)
-    expect(decodeCompactWire(wire)).toEqual(decoded)
+    expect(decodeCompactFrame(wire)).toEqual(decoded)
   })
 
   it('checkTune fails closed on net / epoch / tip mismatch', () => {

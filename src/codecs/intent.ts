@@ -1,7 +1,7 @@
-import type { CompactFrame, WireCodec } from '../types.js'
+import type { CompactFrame, FrameCodec } from '../types.js'
 import {
-  baseFromWire,
-  baseToWire,
+  baseFromFrame,
+  baseToFrame,
   decodeSymbolEnvelope,
   encodeSymbolEnvelope,
 } from './symbol-envelope.js'
@@ -60,7 +60,7 @@ function parseCodeList(raw: string): number[] {
 }
 
 /** Text demo codec for intents (`symbol:base:hex`). Prefer `intent-packed` for compact binary. */
-export const intentCodec: WireCodec = {
+export const intentCodec: FrameCodec = {
   name: 'intent-symbol-envelope',
 
   encode(frame: CompactFrame): string {
@@ -72,7 +72,7 @@ export const intentCodec: WireCodec = {
     const body = [event, band, actors, actions, places].join('|')
     return encodeSymbolEnvelope({
       symbol: frame.symbol,
-      base: baseToWire(frame.vocab_base),
+      base: baseToFrame(frame.vocab_base),
       hex: Buffer.from(body, 'utf8').toString('hex'),
     })
   },
@@ -87,7 +87,7 @@ export const intentCodec: WireCodec = {
     if (![1, 2, 3, 4].includes(band)) return null
     return {
       symbol: SYMBOL_INTENT,
-      vocab_base: baseFromWire(env.base),
+      vocab_base: baseFromFrame(env.base),
       codes: {
         event: [Number(parts[0])],
         actor: parseCodeList(parts[2]),

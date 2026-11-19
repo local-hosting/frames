@@ -1,24 +1,68 @@
 export type {
-  WirelessLinkKind,
-  WirelessPipeFit,
-  ByteRange,
+  BearerCategory,
+  BearerLayout,
+  BearerPipe,
+  BearerProfile,
   BitrateRange,
-  WirelessLinkProfile,
+  ByteRange,
+  CommsProfile,
+  CommsTagId,
+  CovScope,
+  Geo,
+  GeoRf,
+  NumericRange,
+  Ops,
+  OpsAvail,
+  OpsDir,
+  OpsMob,
+  OpsUsage,
+  OverlayCategory,
+  OverlayLayout,
+  OverlayPipe,
+  OverlayProfile,
+  PipeFit,
+  ProfileCategory,
+  ProfileLayout,
+  RangeM,
+  SpectrumRegime,
+  LinkProfile,
 } from './types.js'
-export { defineLink } from './types.js'
+
+export { PROFILE_LAYOUTS, isBearerProfile, isOverlayProfile } from '@local-hosting/comms'
+export {
+  assertCommsProfile,
+  defBearer,
+  defCommsProfile,
+  defLink,
+  defOverlay,
+} from './link-profile.js'
 
 export {
-  WIRELESS_LINKS,
-  getWirelessLink,
-  listWirelessLinks,
-  listThinPipeLinks,
-  listFatPipeLinks,
-  payloadFitsLink,
+  getBearer,
+  getLink,
+  getOverlay,
+  listBearers,
+  listByTag,
+  listFat,
+  listLinks,
+  listOverlays,
+  listTags,
+  listThin,
+  fitsLink,
 } from './registry.js'
 
-export type { WireEncodePrefer, OptimizeForLinkResult } from './optimize.js'
+export type { EncodePref, ForLinkResult } from './optimize.js'
+export { forLink, isThin, canFatHeal } from './optimize.js'
+
+export type { PlanFrameResult } from './plan-frame.js'
+export { planFrame } from './plan-frame.js'
+
+export type { EffectiveEnvelope, PlanStackResult, ResolveStackResult, StackRulesArtifact } from './stack.js'
 export {
-  optimizeForLink,
-  isThinOnlyLink,
-  canFatHealOnLink,
-} from './optimize.js'
+  effectiveEnvelope,
+  getDefaultStackRules,
+  isStackCompatible,
+  listCompatibleBearers,
+  planStack,
+  resolveStack,
+} from './stack.js'

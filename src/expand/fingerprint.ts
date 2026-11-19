@@ -23,7 +23,7 @@ export function fnv1a32(text: string): number {
  * Thin frames set `CompactFrame.vocab_base` to this string; packed air
  * still FNV-1a-16 hashes the string via bits.fnv1a16.
  *
- * Format avoids ':' (envelope) and '_' (baseFromWire maps _ → .).
+ * Format avoids ':' (envelope) and '_' (baseFromFrame maps _ → .).
  * 16 hex chars = two FNV-32 passes (length-salted) for fewer collisions.
  */
 export function fingerprintEntries(entries: readonly SymbolTableEntry[]): string {

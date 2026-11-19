@@ -4,7 +4,7 @@ import {
   readU16LE,
   writeU16LE,
 } from '../bits.js'
-import type { CompactFrame, WireCodec } from '../types.js'
+import type { CompactFrame, FrameCodec } from '../types.js'
 import { SYMBOL_BASE } from '../codecs/symbol-kinds.js'
 import { compactToTune, tuneToCompact } from './codec.js'
 
@@ -64,7 +64,7 @@ export function decodeTunePackedBytes(data: Uint8Array): CompactFrame | null {
   return tuneToCompact({ net, key_epoch, vocab_tip })
 }
 
-export const tunePackedCodec: WireCodec & {
+export const tunePackedCodec: FrameCodec & {
   encodeBytes(frame: CompactFrame): Uint8Array
   decodeBytes(data: Uint8Array): CompactFrame | null
 } = {
