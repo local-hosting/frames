@@ -11,10 +11,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: local-hosting/workspace
+          token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
           path: ws
       - uses: actions/checkout@v4
         with:
           repository: local-hosting/comms
+          token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
           path: ws/comms
       - uses: actions/checkout@v4
         with:
