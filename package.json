@@ -31,9 +31,14 @@
   "scripts": {
     "prebuild": "yarn workspace @local-hosting/comms build",
     "build": "tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit -p tsconfig.json",
+    "validate": "yarn workspace @local-hosting/comms validate",
     "test": "vitest run",
+    "pretest": "yarn build",
+    "prepare": "yarn build",
     "test:watch": "vitest",
+    "ci": "yarn validate && yarn typecheck && yarn test",
     "dev": "vite --config demo/vite.config.ts",
     "preview": "vite preview --config demo/vite.config.ts"
   },
