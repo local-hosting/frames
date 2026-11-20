@@ -35,4 +35,4 @@ jobs:
       - name: Publish package
         run: bash scripts/publish-packages.sh
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
