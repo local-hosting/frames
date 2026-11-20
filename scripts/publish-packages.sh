@@ -7,7 +7,7 @@ if [[ -z "${NODE_AUTH_TOKEN:-}" ]]; then
 fi
 export YARN_NPM_AUTH_TOKEN="${NODE_AUTH_TOKEN}"
 cd "${root}"
-yarn install
+YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
 yarn build
 npm publish --registry=https://npm.pkg.github.com --access=restricted
 echo "publish-packages OK: @local-hosting/frames"
