@@ -46,7 +46,7 @@ export type ReportPolarity = typeof REPORT_DEMAND | typeof REPORT_OFFER
 
 /**
  * Wire frame types (illocution). Codes on the frame point at {@link SymbolKind} referents.
- * 0–5 are the original compose loop; 6+ bridge elevate + fieldwise-ds narrative.
+ * 0–5 are the original compose loop; 6+ bridge elevate + design-system narrative.
  *
  * Distinctions that stay sharp:
  * - **query** — ask for information (“is the shelter open?”)
