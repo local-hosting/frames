@@ -5,6 +5,7 @@ if [[ -z "${NODE_AUTH_TOKEN:-}" ]]; then
   echo "publish-packages: set NODE_AUTH_TOKEN" >&2
   exit 1
 fi
+export YARN_ENABLE_HARDENED_MODE=0
 export YARN_NPM_AUTH_TOKEN="${NODE_AUTH_TOKEN}"
 cd "${root}"
 YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
